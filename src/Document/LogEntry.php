@@ -20,6 +20,9 @@ class LogEntry
     #[MongoDB\Field(type: 'string')]
     private ?string $entity_value = null;
 
+    #[MongoDB\Field(type: 'date_immutable')]
+    private ?\DateTimeImmutable $date_time = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -57,6 +60,13 @@ class LogEntry
     public function setEntityValue(string $entity_value): self
     {
         $this->entity_value = $entity_value;
+
+        return $this;
+    }
+
+    public function setDateTime(\DateTimeImmutable $dateTime): self
+    {
+        $this->date_time = $dateTime;
 
         return $this;
     }
