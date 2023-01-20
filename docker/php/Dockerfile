@@ -4,6 +4,7 @@ FROM php:8.2-fpm-alpine
 RUN docker-php-ext-install pdo_mysql
 
 RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS}
+RUN apk add curl-dev openssl-dev
 RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
 RUN apk add --update linux-headers
