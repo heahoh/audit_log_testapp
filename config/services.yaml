@@ -6,6 +6,7 @@
 parameters:
     env(MONGODB_URL): ''
     env(MONGODB_DB): ''
+    audit.listened_entities: ['App\Entity\Seller']
 
 services:
     # default configuration for services in *this* file
@@ -22,5 +23,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Listener\EntityChangingAuditor:
+        arguments: ['%audit.listened_entities%']
+        tags:
+            - name: 'doctrine.event_subscriber'
+              priority: 500
+              connection: 'default'
