@@ -2,19 +2,21 @@
 
 namespace App\Listener;
 
-use App\Repository\LogEntryRepository;
+use App\Document\LogEntry;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class EntityChangingAuditor implements EventSubscriberInterface
 {
     private array $listenedEntities;
-    private LogEntryRepository $logEntryRepository;
+    private DocumentManager $documentManager;
 
-    public function __construct(array $listenedEntities, LogEntryRepository $logEntryRepository)
+    public function __construct(array $listenedEntities, DocumentManager $documentManager)
     {
         $this->listenedEntities = $listenedEntities;
+        $this->documentManager = $documentManager;
     }
 
     public function getSubscribedEvents(): array
@@ -26,6 +28,6 @@ class EntityChangingAuditor implements EventSubscriberInterface
 
     public function postPersist(LifecycleEventArgs $args): void
     {
-
+        $repo = $this->documentManager->getRepository(LogEntry::class);
     }
 }

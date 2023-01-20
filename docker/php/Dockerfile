@@ -5,8 +5,12 @@ RUN docker-php-ext-install pdo_mysql
 
 RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS}
 RUN pecl install mongodb \
-        &&  echo "extension=mongodb.so" > $PHP_INI_DIR/conf.d/mongo.ini
+    && docker-php-ext-enable mongodb
+RUN apk add --update linux-headers
+RUN pecl install xdebug-3.2.0 \
+    && docker-php-ext-enable xdebug
 
+ADD ./docker/php/xdebug.ini "$PHP_INI_DIR/conf.d/xdebug.ini"
 ADD ./ /var/www/app
 WORKDIR /var/www/app
 

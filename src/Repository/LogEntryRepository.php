@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\LogEntry;
+use App\Document\LogEntry;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 class LogEntryRepository extends DocumentRepository

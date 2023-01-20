@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Document;
 
 use App\Repository\LogEntryRepository;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
