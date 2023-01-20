@@ -7,16 +7,16 @@ use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class EntityChangingAuditor implements EventSubscriberInterface
 {
-    private array $listenedEntities;
-    private DocumentManager $documentManager;
-
-    public function __construct(array $listenedEntities, DocumentManager $documentManager)
+    public function __construct(
+        private readonly array $listenedEntities,
+        private readonly DocumentManager $documentManager,
+        private readonly Security $security
+    )
     {
-        $this->listenedEntities = $listenedEntities;
-        $this->documentManager = $documentManager;
     }
 
     public function getSubscribedEvents(): array
@@ -28,6 +28,18 @@ class EntityChangingAuditor implements EventSubscriberInterface
 
     public function postPersist(LifecycleEventArgs $args): void
     {
-        $repo = $this->documentManager->getRepository(LogEntry::class);
+        $changedEntity = $args->getObject();
+        $changedEntityClass = get_class($changedEntity);
+        if (!in_array($changedEntityClass, $this->listenedEntities)) {
+            return;
+        }
+
+        $logEntry = new LogEntry();
+        $logEntry->setUserId($this->security->getUser()?->getUserIdentifier());
+        $logEntry->setEntity($changedEntityClass);
+        $logEntry->setEntityValue('asd');
+
+        $auditRepository = $this->documentManager->getRepository(LogEntry::class);
+        $auditRepository->save($logEntry, true);
     }
 }

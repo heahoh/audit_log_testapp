@@ -9,10 +9,10 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 class LogEntry
 {
     #[MongoDB\Id]
-    private ?int $id = null;
+    private ?string $id = null;
 
-    #[MongoDB\Field(type: 'int')]
-    private ?int $user_id = null;
+    #[MongoDB\Field(type: 'string')]
+    private ?string $user_id = null;
 
     #[MongoDB\Field(type: 'string')]
     private ?string $entity = null;
@@ -25,12 +25,12 @@ class LogEntry
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): ?string
     {
         return $this->user_id;
     }
 
-    public function setUserId(?int $user_id): self
+    public function setUserId(?string $user_id): self
     {
         $this->user_id = $user_id;
 

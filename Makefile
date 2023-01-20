@@ -5,4 +5,7 @@ up:
 	docker-compose up -d
 
 down:
-	docker-compose down -v
+	docker-compose down -v --remove-orphans
+
+migrate:
+	docker-compose exec php-fpm bin/console doctrine:migrations:migrate
