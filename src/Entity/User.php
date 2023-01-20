@@ -29,6 +29,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+//    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: LogEntry::class)]
+//    private Collection $auditLogEntries;
+
+    public function __construct()
+    {
+//        $this->auditLogEntries = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,4 +106,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+//
+//    public function getAuditLogEntries(): Collection
+//    {
+//        return $this->auditLogEntries;
+//    }
+//
+//    public function addAuditLogEntry(LogEntry $auditLogEntry): self
+//    {
+//        if (!$this->auditLogEntries->contains($auditLogEntry)) {
+//            $this->auditLogEntries->add($auditLogEntry);
+//            $auditLogEntry->setUserId($this->id);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeAuditLogEntry(LogEntry $auditLogEntry): self
+//    {
+//        if ($this->auditLogEntries->removeElement($auditLogEntry)) {
+//            // set the owning side to null (unless already changed)
+//            if ($auditLogEntry->getUserId() === $this) {
+//                $auditLogEntry->setUserId(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 }
