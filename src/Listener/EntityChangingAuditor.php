@@ -12,9 +12,9 @@ use Symfony\Bundle\SecurityBundle\Security;
 class EntityChangingAuditor implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly array $listenedEntities,
+        private readonly array           $listenedEntities,
         private readonly DocumentManager $documentManager,
-        private readonly Security $security
+        private readonly Security        $security
     )
     {
     }
@@ -23,10 +23,11 @@ class EntityChangingAuditor implements EventSubscriberInterface
     {
         return [
             Events::postPersist,
+            Events::postUpdate,
         ];
     }
 
-    public function postPersist(LifecycleEventArgs $args): void
+    public function __invoke(LifecycleEventArgs $args): void
     {
         $changedEntity = $args->getObject();
         $changedEntityClass = get_class($changedEntity);
